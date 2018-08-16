@@ -23,28 +23,55 @@ class Repository
     end
   end
 
+  # Get all changements for config/secrets.yml file (who contains some API keys)
+  def search_rails_config_secrets
+    results = []
 
+    absolute_file_path = File.join @path, 'config', 'secrets.yml'
+
+    self.checkout_on_yaml_file_change(absolute_file_path) do |secrets|
+
+      puts secrets.inspect
+      results << secrets
+
+    end
+
+    return results.uniq
+  end
+
+
+  # Get all changements for config/database.yml file (who contains database configuration for Ruby on Rails Framework)
   def search_rails_config_database
     results = []
 
     absolute_file_path = File.join @path, 'config', 'database.yml'
 
-    self.checkout_on_file_change(absolute_file_path) do
+    self.checkout_on_yaml_file_change(absolute_file_path) do |configs|
+
+      configs.each do |config|
+        config_data = config[1]
+        next if config_data["adapter"] == "sqlite3"
+        results << config_data
+      end
+
+    end
+
+    return results.uniq
+  end
+
+  # Checkout on all file changes
+  #
+  # @param file <String> absolute filepath
+  # @yield <Hash> YAML file parsed
+  def checkout_on_yaml_file_change file
+    self.checkout_on_file_change(file) do
       begin
-        YAML.load(File.read(absolute_file_path)).each do |config|
-
-          config_name = config[0]
-          config_data = config[1]
-
-          next if config_data["adapter"] == "sqlite3"
-          results << config_data
-        end
+        data = YAML.load(File.read(file))
+        yield data
       rescue Psych::SyntaxError => e
         # can't parse YAML file
       end
     end
-
-    return results.uniq
   end
 
 
