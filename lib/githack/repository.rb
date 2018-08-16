@@ -27,15 +27,9 @@ class Repository
   def search_rails_config_database
     results = []
 
-    @git.checkout 'master'
-
     absolute_file_path = File.join @path, 'config', 'database.yml'
 
-
-    @git.log.object(absolute_file_path).each do |commit|
-      @git.checkout commit
-      next unless File.exists? absolute_file_path
-
+    self.checkout_on_file_change(absolute_file_path) do
       begin
         YAML.load(File.read(absolute_file_path)).each do |config|
 
@@ -46,12 +40,27 @@ class Repository
           results << config_data
         end
       rescue Psych::SyntaxError => e
-        
+        # can't parse YAML file
       end
-
     end
 
     return results.uniq
+  end
+
+
+  # Checkout on all file changes
+  #
+  # @param file <String> absolute filepath
+  # @yield <Git::Log>
+  def checkout_on_file_change file
+    @git.checkout 'master'
+    @git.log.object(file).each do |commit|
+      @git.checkout commit
+      next unless File.exists? file
+
+      yield commit
+    end
+    @git.checkout 'master'
   end
 
 
