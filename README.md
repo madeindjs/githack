@@ -1,8 +1,21 @@
 # Githack
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/githack`. To experiment with that code, run `bin/console` for an interactive prompt.
+Crawl [Git][git]'s commits of a given repository to find forgotten credentials
 
-TODO: Delete this and the text above, and describe your gem
+Currently support:
+
+- [Ruby on Rails](https://rubyonrails.org)
+
+  - _config/secrets.yml_ 
+  - _config/database.yml_ 
+
+## Dependencies
+
+You need to install [Git][git]. Exemple for Debian based distributions:
+
+```bash
+$ sudo apt install git
+```
 
 ## Installation
 
@@ -22,7 +35,29 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Simply use tis to clone the remote repository in your temporary folder
+
+```ruby
+require 'githack'
+
+repository = Repository.new 'https://github.com/RaspberryCook/website'
+```
+
+And then you can search on repository like this:
+
+```ruby
+repository.search_rails_config_database
+# [{"adapter"=>"mysql2", "database"=>"raspberry_cook", "encoding"=>"utf8", "username"=>"raspberry_cook", "password"=>"secret", "host"=>"localhost", "pool"=>5, "timeout"=>5000}])
+
+repository.search_rails_config_secrets
+# [{"development"=>{"marmiton_password"=>"20462046"}, "production"=>{"marmiton_password"=>"20462046"}, "test"=>{"marmiton_password"=>"20462046"}}])
+```
+
+Theses methods will:
+
+1. Search all commit were file changed
+2. Checkout on theses commit to get file content
+3. Filter only usefull informations
 
 ## Development
 
@@ -37,3 +72,5 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## Code of Conduct
 
 Everyone interacting in the Githack project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/githack/blob/master/CODE_OF_CONDUCT.md).
+
+[git]: https://git-scm.com/

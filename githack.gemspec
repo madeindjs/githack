@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Rousseau Alexandre"]
   spec.email         = ["contact@rousseau-alexandre.Fr"]
 
-  spec.summary       = %q{Find informations in git repository}
-  spec.description   = %q{Find informations in git repository}
+  spec.summary       = %q{Crawl git's commits of a given repository to find forgotten credentials}
+  spec.description   = %q{Crawl git's commits of a given repository to find forgotten credentials}
   spec.homepage      = "https://github.com/madeindjs/githack"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
