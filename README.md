@@ -1,5 +1,7 @@
 # Githack
 
+[![Gem Version](https://badge.fury.io/rb/githack.svg)](https://rubygems.org/gems/githack)
+
 Crawl [Git][git]'s commits of a given repository to find forgotten credentials
 
 Currently support:
