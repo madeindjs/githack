@@ -3,6 +3,7 @@ PATH
   specs:
     githack (0.1.0)
       git (~> 1.5)
+      tty-spinner (~> 0.8)
 
 GEM
   remote: https://rubygems.org/
@@ -23,6 +24,9 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
+    tty-cursor (0.6.0)
+    tty-spinner (0.8.0)
+      tty-cursor (>= 0.5.0)
 
 PLATFORMS
   ruby

@@ -6,8 +6,8 @@ Currently support:
 
 - [Ruby on Rails](https://rubyonrails.org)
 
-  - _config/secrets.yml_ 
-  - _config/database.yml_ 
+  - _config/secrets.yml_
+  - _config/database.yml_
 
 ## Dependencies
 
@@ -35,6 +35,8 @@ Or install it yourself as:
 
 ## Usage
 
+### As library
+
 Simply use tis to clone the remote repository in your temporary folder
 
 ```ruby
@@ -58,6 +60,14 @@ Theses methods will:
 1. Search all commit were file changed
 2. Checkout on theses commit to get file content
 3. Filter only usefull informations
+
+### As command line tool
+
+Simply use
+
+```bash
+$ githack.rb https://github.com/RaspberryCook/website
+```
 
 ## Development
 
