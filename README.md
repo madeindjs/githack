@@ -42,7 +42,7 @@ Simply use tis to clone the remote repository in your temporary folder
 ```ruby
 require 'githack'
 
-repository = Repository.new 'https://github.com/RaspberryCook/website'
+repository = Githack::RailsRepository.new 'https://github.com/RaspberryCook/website'
 ```
 
 And then you can search on repository like this:

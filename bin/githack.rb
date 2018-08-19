@@ -33,7 +33,7 @@ end.parse!
 
 spinner = TTY::Spinner.new '[:spinner] Cloning repository ...'
 spinner.auto_spin
-repository = Repository.new url
+repository = Githack::RailsRepository.new url
 spinner.stop('Done!')
 
 unless options[:skip_config_database]
