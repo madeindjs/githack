@@ -7,6 +7,11 @@ module Githack
   class Repository
     attr_reader :git, :remote, :name, :path
 
+    # Represent the path to secrets file
+    SECRET_PATH = []
+    # Represent the path to database configuration file
+    DATABASE_PATH = []
+
     def initialize(remote)
       @remote = remote
       @name = remote.gsub /[^0-9A-Z]/i, '_'
@@ -19,12 +24,13 @@ module Githack
              end
     end
 
+
     # Get all changements for config/secrets.yml file (who contains some API keys)
     #
     # @return [Array<Githack::Leak>]
     def secrets
       leaks = []
-      get_leaks(secret_path).each do |leak|
+      get_leaks(File.join(@path, self.class::SECRET_PATH)).each do |leak|
         leaks << leak
         yield lead if block_given?
       end
@@ -36,7 +42,7 @@ module Githack
     # @return [Array<Githack::Leak>]
     def databases
       leaks = []
-      get_leaks(database_path).each do |leak|
+      get_leaks(File.join(@path, self.class::DATABASE_PATH)).each do |leak|
         leaks << leak
         yield lead if block_given?
       end
