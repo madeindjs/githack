@@ -5,7 +5,7 @@ module Githack
     def initialize(sha, file)
       @sha = sha
       @file = file
-      @content = File.read @file
+      @content = File.read(file)
     end
   end
 end

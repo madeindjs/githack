@@ -1,6 +1,7 @@
 require 'tmpdir'
 require 'yaml'
 require 'git'
+require 'githack/leak'
 
 module Githack
   class Repository
@@ -24,7 +25,8 @@ module Githack
     def secrets
       leaks = []
       get_leaks(secret_path).each do |leak|
-        yield leaks << leak
+        leaks << leak
+        yield lead if block_given?
       end
       leaks
     end
@@ -35,7 +37,8 @@ module Githack
     def databases
       leaks = []
       get_leaks(database_path).each do |leak|
-        yield leaks << leak
+        leaks << leak
+        yield lead if block_given?
       end
       leaks
     end
@@ -54,7 +57,10 @@ module Githack
           @git.checkout commit
           next unless File.exist? file
 
-          yield leaks << Githack::Leak.new(commit.sha, file)
+          leak = Githack::Leak.new(commit.sha, file)
+          leaks << leak
+
+          yield leak if block_given?
         end
       rescue StandardError
         Psych::BadAlias
