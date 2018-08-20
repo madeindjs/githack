@@ -44,16 +44,16 @@ Simply use tis to clone the remote repository in your temporary folder
 ```ruby
 require 'githack'
 
-repository = Githack::RailsRepository.new 'https://github.com/RaspberryCook/website'
+repository = Githack::Repositories::Rails.new 'https://github.com/RaspberryCook/website'
 ```
 
 And then you can search on repository like this:
 
 ```ruby
-repository.search_rails_config_database
+repository.databases
 # [{"adapter"=>"mysql2", "database"=>"raspberry_cook", "encoding"=>"utf8", "username"=>"raspberry_cook", "password"=>"secret", "host"=>"localhost", "pool"=>5, "timeout"=>5000}])
 
-repository.search_rails_config_secrets
+repository.secrets
 # [{"development"=>{"marmiton_password"=>"20462046"}, "production"=>{"marmiton_password"=>"20462046"}, "test"=>{"marmiton_password"=>"20462046"}}])
 ```
 

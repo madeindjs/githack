@@ -1,5 +1,5 @@
 require 'githack/version'
-require 'githack/rails_repository'
+require 'githack/repositories/rails'
 
 module Githack
   # Your code goes here...

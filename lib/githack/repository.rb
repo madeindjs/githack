@@ -18,6 +18,15 @@ module Githack
              end
     end
 
+    def secrets
+      raise 'Not implemented'
+    end
+
+    # Get all changements for config/database.yml file (who contains database configuration for Ruby on Rails Framework)
+    def databases
+      raise 'Not implemented'
+    end
+
     protected
 
     # Checkout on all file changes

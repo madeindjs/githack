@@ -33,13 +33,13 @@ end.parse!
 
 spinner = TTY::Spinner.new '[:spinner] Cloning repository ...'
 spinner.auto_spin
-repository = Githack::RailsRepository.new url
+repository = Githack::Repositories::Rails.new url
 spinner.stop('Done!')
 
 unless options[:skip_config_database]
   spinner = TTY::Spinner.new '[:spinner] Search in config/database.yml (Rails) ...'
   spinner.auto_spin
-  result = repository.search_rails_config_database
+  result = repository.databases
   spinner.stop('Done!')
   pp result
 end
@@ -47,7 +47,7 @@ end
 unless options[:skip_config_secrets]
   spinner = TTY::Spinner.new '[:spinner] Search in config/secrets.yml (Rails) ...'
   spinner.auto_spin
-  result = repository.search_rails_config_secrets
+  result = repository.secrets
   spinner.stop('Done!')
   pp result
 end
