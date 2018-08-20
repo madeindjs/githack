@@ -45,14 +45,28 @@ require 'githack'
 repository = Githack::Repositories::Rails::v4.new 'https://github.com/RaspberryCook/website'
 ```
 
-And then you can search on repository like this:
+And then you can search on repository using `databases` or `secrets` who returns `Array<Githack::Leak>`. `Githack::Leak` contains `sha`, `file` and `content`:
 
 ```ruby
-repository.databases
-# [{"adapter"=>"mysql2", "database"=>"raspberry_cook", "encoding"=>"utf8", "username"=>"raspberry_cook", "password"=>"secret", "host"=>"localhost", "pool"=>5, "timeout"=>5000}])
+repository.databases.each do |leak|
+  # <Githack::Leak:Githack::Leak:0x00556db18af998 ...  >,
+  puts leak.sha
+  # => 566fac779248c345192512423770f14cf4af1435
+  puts leak.file
+  # => /tmp/https___github_com_madeindjs_fooder/config/database.yml
+  puts leak.content
+  # "development:\n" +
+  # "  adapter: mysql2\n" +
+  # "  database: raspberry_cook\n" +
+  # "  encoding: utf8\n" +
+  # "  username: raspberry_cook\n" +
+  # "  password: secret\n" +
+  # "  host:  localhost\n" +
+end
 
-repository.secrets
-# [{"development"=>{"marmiton_password"=>"20462046"}, "production"=>{"marmiton_password"=>"20462046"}, "test"=>{"marmiton_password"=>"20462046"}}])
+repository.secrets.each do |leak|
+  # ....
+end
 ```
 
 Theses methods will:
