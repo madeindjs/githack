@@ -18,13 +18,34 @@ module Githack
              end
     end
 
+    # Get all changements for config/secrets.yml file (who contains some API keys)
+    #
+    # @return [Array<Githack::Leak>]
     def secrets
-      raise 'Not implemented'
+      results = []
+
+      checkout_on_yaml_file_change(secret_path) do |secrets|
+        results << secrets
+      end
+
+      results.uniq
     end
 
     # Get all changements for config/database.yml file (who contains database configuration for Ruby on Rails Framework)
+    #
+    # @return [Array<Githack::Leak>]
     def databases
-      raise 'Not implemented'
+      results = []
+
+      checkout_on_yaml_file_change(databases_path) do |configs|
+        configs.each do |config|
+          config_data = config[1]
+          next if config_data['adapter'] == 'sqlite3'
+          results << config_data
+        end
+      end
+
+      results.uniq
     end
 
     protected
