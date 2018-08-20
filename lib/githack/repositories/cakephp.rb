@@ -4,13 +4,19 @@ module Githack
   module Repositories
     module CakePHP
       class V3 < Githack::Repository
+        DATABASE_PATHS = [
+          File.join('config', 'app.php')
+        ].freeze
+
         # SECRET_PATH = ['config', 'secrets.yml']
-        DATABASE_PATH = ['config', 'app.php'].freeze
       end
 
       class V2 < Githack::Repository
+        DATABASE_PATHS = [
+          File.join('app', 'Config', 'database.php')
+        ].freeze
+
         # SECRET_PATH = ['config', 'secrets.yml']
-        DATABASE_PATH = ['app', 'Config', 'database.php'].freeze
       end
     end
   end

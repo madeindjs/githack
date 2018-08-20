@@ -4,8 +4,13 @@ module Githack
   module Repositories
     module Rails
       class V5 < Githack::Repository
-        SECRET_PATH = ['config', 'secrets.yml'].freeze
-        DATABASE_PATH = ['config', 'database.yml'].freeze
+        SECRET_PATHS = [
+          File.join('config', 'secrets.yml')
+        ].freeze
+
+        DATABASE_PATHS = [
+          File.join('config', 'database.yml')
+        ].freeze
       end
 
       class V4 < V5

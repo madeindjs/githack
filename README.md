@@ -2,18 +2,16 @@
 
 [![Gem Version](https://badge.fury.io/rb/githack.svg)](https://rubygems.org/gems/githack)
 
-Crawl [Git][git]'s commits of a given repository to find forgotten credentials
+Crawl [Git][git]'s commits of a given repository to find forgotten credentials according to given framework.
 
-Currently support:
+> [See documentation ](https://www.rubydoc.info/gems/githack/Githack/Repositories) to know which framework is currently supported
 
-- [Ruby on Rails](https://rubyonrails.org)
-
-  - _config/secrets.yml_
-  - _config/database.yml_
 
 ## Dependencies
 
-You need to install [Git][git]. Exemple for Debian based distributions:
+You need to install [Git][git].
+
+Exemple for Debian based distributions:
 
 ```bash
 $ sudo apt install git
@@ -44,7 +42,7 @@ Simply use tis to clone the remote repository in your temporary folder
 ```ruby
 require 'githack'
 
-repository = Githack::Repositories::Rails.new 'https://github.com/RaspberryCook/website'
+repository = Githack::Repositories::Rails::v4.new 'https://github.com/RaspberryCook/website'
 ```
 
 And then you can search on repository like this:
@@ -68,7 +66,7 @@ Theses methods will:
 Simply use
 
 ```bash
-$ githack.rb https://github.com/RaspberryCook/website
+$ githack.rb --framework=Rails::V4 https://github.com/madeindjs/fooder
 ```
 
 ## Development

@@ -7,10 +7,10 @@ module Githack
   class Repository
     attr_reader :git, :remote, :name, :path
 
-    # Represent the path to secrets file
-    SECRET_PATH = []
-    # Represent the path to database configuration file
-    DATABASE_PATH = []
+    # Represent the path to secrets files
+    SECRET_PATH = [].freeze
+    # Represent the path to database configuration files
+    DATABASE_PATH = [].freeze
 
     def initialize(remote)
       @remote = remote
@@ -24,13 +24,14 @@ module Githack
              end
     end
 
-
     # Get all changements for config/secrets.yml file (who contains some API keys)
     #
     # @return [Array<Githack::Leak>]
     def secrets
       leaks = []
-      get_leaks(File.join(@path, self.class::SECRET_PATH)).each do |leak|
+      files = self.class::SECRET_PATHS.map { |f| File.join(@path, f) }
+
+      get_leaks(*files).each do |leak|
         leaks << leak
         yield lead if block_given?
       end
@@ -42,7 +43,9 @@ module Githack
     # @return [Array<Githack::Leak>]
     def databases
       leaks = []
-      get_leaks(File.join(@path, self.class::DATABASE_PATH)).each do |leak|
+      files = self.class::DATABASE_PATHS.map { |f| File.join(@path, f) }
+
+      get_leaks(*files).each do |leak|
         leaks << leak
         yield lead if block_given?
       end
@@ -53,25 +56,28 @@ module Githack
 
     # Checkout on all file changes
     #
-    # @param file <String> absolute filepath
     # @yield [Githack::Leak]
-    def get_leaks(file)
+    def get_leaks(*files)
       leaks = []
       @git.checkout 'master'
-      begin
-        @git.log.object(file).each do |commit|
-          @git.checkout commit
-          next unless File.exist? file
 
-          leak = Githack::Leak.new(commit.sha, file)
-          leaks << leak
+      files.each do |file|
+        begin
+          @git.log.object(file).each do |commit|
+            @git.checkout commit
+            next unless File.exist? file
 
-          yield leak if block_given?
+            leak = Githack::Leak.new(commit.sha, file)
+            leaks << leak
+
+            yield leak if block_given?
+          end
+        rescue StandardError
+          Psych::BadAlias
         end
-      rescue StandardError
-        Psych::BadAlias
+        @git.checkout 'master'
       end
-      @git.checkout 'master'
+
       leaks
     end
   end
