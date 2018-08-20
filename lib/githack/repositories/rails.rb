@@ -7,7 +7,7 @@ module Githack
         File.join @path, 'config', 'secrets.yml'
       end
 
-      def databases_path
+      def database_path
         File.join @path, 'config', 'database.yml'
       end
     end
