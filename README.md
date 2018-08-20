@@ -73,7 +73,6 @@ Theses methods will:
 
 1. Search all commit were file changed
 2. Checkout on theses commit to get file content
-3. Filter only usefull informations
 
 ### As command line tool
 
@@ -91,7 +90,35 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/githack. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/madeindjs/githack. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
+### Add new framwork to support
+
+Fork this repository & create a new file based on `Githack::Repositories::Rails`
+
+```bash
+$ cp lib/githack/repositories/rails.rb
+```
+
+Then simply overwride
+
+```ruby
+# lib/githack/repositories/your_framework.rb
+module Githack
+  module Repositories
+    # Module who hold all version of your framework
+    module YourFramework
+      # Represent a version of your framework
+      class V1 < Githack::Repository
+        # Represent the path to secrets files
+        DATABASE_PATHS = [File.join('config', 'database.php')].freeze
+        # Represent the path to database configuration files
+        SECRET_PATH = [File.join('config', 'secrets.yml')].freeze
+      end
+    end
+  end
+end
+```
 
 ## Code of Conduct
 
